@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -19,27 +18,23 @@ public class Admin {
     private Integer id;
 
     // 帳號：限制为 5-20 个字符
-    @Schema(description = "帳號", example = "johndoe", minLength = 5, maxLength = 20, required = true)
-    @Size(min = 5, max = 20)
+    @Schema(description = "帳號", example = "johndoe", minLength = 5, maxLength = 20)
     @Column(length = 20, nullable = false)
     private String username;
 
     // 密碼：限制为 8-20 个字符
-    @Schema(description = "密碼", example = "password123", minLength = 8, maxLength = 20, required = true)
-    @Size(min = 8, max = 20)
+    @Schema(description = "密碼", example = "password123", minLength = 8, maxLength = 20)
     @Column(length = 20, nullable = false)
     @JsonIgnore
     private String password;
 
     // 姓名：限制为 1-50 个字符
     @Schema(description = "姓名", example = "John Doe", maxLength = 50)
-    @Size(max = 50)
     @Column(length = 50)
     private String name;
 
     // 員工編號
     @Schema(description = "員工編號", example = "John Doe", maxLength = 50)
-    @Size(max = 50)
     @Column(nullable = false, unique = true, length=50)
     private String personnelCode;
 

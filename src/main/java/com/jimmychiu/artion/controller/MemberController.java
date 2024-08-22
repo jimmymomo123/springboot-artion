@@ -48,6 +48,14 @@ public class MemberController {
         return Result.success();
     }
 
+    @PutMapping("/{memberId}")
+    public Result updateAvatar(@PathVariable Long memberId,
+                         @RequestParam String avatarUrl){
+
+        memberService.updateAvatar(memberId,avatarUrl);
+        return Result.success();
+    }
+
     @DeleteMapping("{memberId}")
     public Result delete(@PathVariable Long memberId){
         memberService.deleteMember(memberId);

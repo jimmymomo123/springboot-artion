@@ -9,6 +9,7 @@ import com.jimmychiu.artion.repository.RoleRepository;
 import com.jimmychiu.artion.service.MemberService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,11 +24,15 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private RoleRepository roleRepo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     @Override
     public void registry(LoginAndRegisterRequest request) {
 
         //加密密碼
+        String hashPassword = passwordEncoder.encode(request.getPassword());
 
         // 创建 Role 实体
         Role role = new Role();
@@ -38,7 +43,7 @@ public class MemberServiceImpl implements MemberService {
         // 创建 Member 实体
         Member member = new Member();
         member.setUsername(request.getUsername());
-        member.setPassword(request.getPassword());
+        member.setPassword(hashPassword);
         member.setCreatedTime(LocalDateTime.now());
         member.setUpdatedTime(LocalDateTime.now());
         member.setRole(role);
@@ -72,7 +77,6 @@ public class MemberServiceImpl implements MemberService {
         if (request.getBirth() != null) {
             member.setBirth(request.getBirth());
         }
-
         if (roleId != null){
             Role role = roleRepo.findById(roleId).orElseThrow();
             member.setRole(role);
@@ -88,6 +92,15 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepo.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + memberId));
         memberRepo.delete(member);
+    }
+
+    @Override
+    public void updateAvatar(Long memberId, String avatarUrl) {
+        Member member = memberRepo.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + memberId));
+        member.setUpdatedTime(LocalDateTime.now());
+        member.setMemberPic(avatarUrl);
+        memberRepo.save(member);
     }
 
 }

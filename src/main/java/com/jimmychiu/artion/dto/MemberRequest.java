@@ -1,8 +1,8 @@
 package com.jimmychiu.artion.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -16,9 +16,10 @@ public class MemberRequest {
     private String name;
 
     // 信箱：限制为 5-100 个字符
-    @Schema(description = "信箱", example = "johndoe@example.com", maxLength = 100, required = true)
+    @Schema(description = "信箱", example = "johndoe@example.com", maxLength = 100)
     @Size(max = 100)
     @NotBlank(message = "信箱不能是空白字符") // 仅当字段有值时，值不能是空字符串
+    @Email
     private String email;
 
     // 電話號碼：限制为 10-15 個字符
@@ -39,7 +40,6 @@ public class MemberRequest {
 
     //角色id
     @Schema(description = "角色id", example = "1")
-    @NotNull(message = "角色ID不能為空值")
     private Integer roleId;
 
     public String getName() {

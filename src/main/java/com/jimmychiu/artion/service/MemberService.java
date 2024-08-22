@@ -9,4 +9,6 @@ public interface MemberService {
     void updateMember(Long memberId, MemberRequest request);
 
     void deleteMember(Long memberId);
+
+    void updateAvatar(Long memberId, String avatarUrl);
 }

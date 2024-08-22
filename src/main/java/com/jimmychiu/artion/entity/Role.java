@@ -3,7 +3,6 @@ package com.jimmychiu.artion.entity;
 import com.fasterxml.jackson.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -17,13 +16,11 @@ public class Role {
     private Integer id;
 
     // 角色名稱：限制为 1-50 个字符
-    @Schema(description = "角色名稱", example = "", maxLength = 20)
-    @Size(max = 20)
+    @Schema(description = "角色名稱", example = "一般會員", maxLength = 20)
     @Column(length = 20)
     private String name;
 
     // 權限：限制为 500 个字符
-    @Size(max=500)
     @Column(nullable = false, length=500)
     private String permissions;
 

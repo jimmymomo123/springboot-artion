@@ -1,8 +1,8 @@
 package com.jimmychiu.artion.enumType;
 
 public enum Permission {
-    ADMIN_LOGIN("AdminLogin","後台登入");
-
+    ADMIN_LOGIN("AdminLogin","後台登入"),
+    MEMBER_LOGIN("MemberLogin","會員登入");
     private final String code;
     private final String description;
 

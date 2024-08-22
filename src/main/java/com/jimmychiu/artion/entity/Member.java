@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,39 +19,33 @@ public class Member {
     private Long id;
 
     // 帳號：限制为 5-20 个字符
-    @Schema(description = "帳號", example = "johndoe", minLength = 5, maxLength = 20, required = true)
-    @Size(min = 5, max = 20)
+    @Schema(description = "帳號", example = "johndoe", minLength = 5, maxLength = 20)
     @Column(length = 20, nullable = false)
     private String username;
 
     // 密碼：限制为 8-20 个字符
-    @Schema(description = "密碼", example = "password123", minLength = 8, maxLength = 20, required = true)
-    @Size(min = 8, max = 20)
+    @Schema(description = "密碼", example = "password123", minLength = 8, maxLength = 20)
     @Column(length = 20, nullable = false)
     @JsonIgnore
     private String password;
 
     // 姓名：限制为 1-50 个字符
     @Schema(description = "姓名", example = "John Doe", maxLength = 50)
-    @Size(max = 50)
     @Column(length = 50)
     private String name;
 
     // 信箱：限制为 5-100 个字符
-    @Schema(description = "信箱", example = "johndoe@example.com", maxLength = 100, required = true)
-    @Size(max = 100)
+    @Schema(description = "信箱", example = "johndoe@example.com", maxLength = 100)
     @Column(length = 100, nullable = false)
     private String email;
 
     // 電話號碼：限制为 10-15 個字符
     @Schema(description = "電話號碼", example = "+1234567890", minLength = 10, maxLength = 15)
-    @Size(min = 10, max = 15)
     @Column(length = 15)
     private String phoneNum;
 
     // 性別：限制为 1 个字符 ('M', 'F', 'O' 等)
     @Schema(description = "性別", example = "M", maxLength = 1)
-    @Size(max = 1)
     @Column(length = 1)
     private String gender;
 
@@ -60,6 +53,10 @@ public class Member {
     @Schema(description = "生日", example = "1990-01-01")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth;
+
+    // 照片
+    @Schema(description = "會員照片的 URL", example = "https://example.com/event.jpg")
+    private String memberPic;
 
     //資料創建時間
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -138,6 +135,14 @@ public class Member {
 
     public void setBirth(LocalDate birth) {
         this.birth = birth;
+    }
+
+    public String getMemberPic() {
+        return memberPic;
+    }
+
+    public void setMemberPic(String memberPic) {
+        this.memberPic = memberPic;
     }
 
     public LocalDateTime getCreatedTime() {
