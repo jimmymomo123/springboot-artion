@@ -14,10 +14,19 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ArtionSecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        //後台設置
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/admins").hasAuthority(Permission.ADMIN_LOGIN.getCode())
+
+                )
+                .csrf(csrf -> csrf.disable());
+
+        //前台設置
+        http
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
                                 .requestMatchers("/members").hasAuthority(Permission.MEMBER_LOGIN.getCode())
                 )
                 .csrf(csrf -> csrf.disable());

@@ -7,6 +7,7 @@ import com.jimmychiu.artion.entity.Member;
 import com.jimmychiu.artion.repository.MemberRepository;
 import com.jimmychiu.artion.service.MemberService;
 import jakarta.validation.Valid;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +51,7 @@ public class MemberController {
 
     @PutMapping("/{memberId}")
     public Result updateAvatar(@PathVariable Long memberId,
-                         @RequestParam String avatarUrl){
+                               @URL @RequestParam String avatarUrl){
 
         memberService.updateAvatar(memberId,avatarUrl);
         return Result.success();
