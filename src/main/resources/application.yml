@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=master;sslProtocol=TLSv1.2;Encrypt=false
+    username: sa
+    password: Eason9379
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    show-sql: true
+    database: sql-server
+    hibernate:
+      ddl-auto: create
+      format_sql: true
