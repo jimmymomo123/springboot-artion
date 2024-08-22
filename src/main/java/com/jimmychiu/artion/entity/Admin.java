@@ -24,7 +24,7 @@ public class Admin {
 
     // 密碼：限制为 8-20 个字符
     @Schema(description = "密碼", example = "password123", minLength = 8, maxLength = 20)
-    @Column(length = 20, nullable = false)
+    @Column(length = 255, nullable = false)
     @JsonIgnore
     private String password;
 

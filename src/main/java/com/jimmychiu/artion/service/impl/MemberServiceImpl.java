@@ -4,6 +4,7 @@ import com.jimmychiu.artion.dto.LoginAndRegisterRequest;
 import com.jimmychiu.artion.dto.MemberRequest;
 import com.jimmychiu.artion.entity.Member;
 import com.jimmychiu.artion.entity.Role;
+import com.jimmychiu.artion.enumType.Permission;
 import com.jimmychiu.artion.repository.MemberRepository;
 import com.jimmychiu.artion.repository.RoleRepository;
 import com.jimmychiu.artion.service.MemberService;
@@ -36,8 +37,8 @@ public class MemberServiceImpl implements MemberService {
 
         // 创建 Role 实体
         Role role = new Role();
-        role.setName("Normal Member");
-        role.setPermissions("Normal");
+        role.setName(Permission.MEMBER_LOGIN.getCode());
+        role.setPermissions(Permission.MEMBER_LOGIN.name());
         roleRepo.save(role);
 
         // 创建 Member 实体

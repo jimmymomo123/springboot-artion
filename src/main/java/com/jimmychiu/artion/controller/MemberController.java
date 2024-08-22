@@ -49,7 +49,7 @@ public class MemberController {
         return Result.success();
     }
 
-    @PutMapping("/{memberId}")
+    @PutMapping("/{memberId}/avatar")
     public Result updateAvatar(@PathVariable Long memberId,
                                @URL @RequestParam String avatarUrl){
 

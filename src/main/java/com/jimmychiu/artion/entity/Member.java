@@ -25,7 +25,7 @@ public class Member {
 
     // 密碼：限制为 8-20 个字符
     @Schema(description = "密碼", example = "password123", minLength = 8, maxLength = 20)
-    @Column(length = 20, nullable = false)
+    @Column(length = 255, nullable = false)
     @JsonIgnore
     private String password;
 
@@ -36,7 +36,7 @@ public class Member {
 
     // 信箱：限制为 5-100 个字符
     @Schema(description = "信箱", example = "johndoe@example.com", maxLength = 100)
-    @Column(length = 100, nullable = false)
+    @Column(length = 100)
     private String email;
 
     // 電話號碼：限制为 10-15 個字符
