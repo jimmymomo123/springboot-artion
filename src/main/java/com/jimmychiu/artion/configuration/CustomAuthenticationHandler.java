@@ -50,7 +50,7 @@ public class CustomAuthenticationHandler implements AuthenticationSuccessHandler
         if (role.startsWith("ADMIN_")){
             Admin admin = adminRepo.findByUsername(username);
             claims.put("role",role);
-            claims.put("personnelCode",admin.getPersonnelCode());
+            claims.put("username",admin.getUsername());
         }else {
             Member member = memberRepo.findByUsername(username);
             claims.put("role",role);

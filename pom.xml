@@ -76,11 +76,11 @@
 			<artifactId>log4j-api</artifactId>
 		</dependency>
 
-		<!-- Optional: Log4j2 SLF4J Binding (if you're using SLF4J) -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
-		</dependency>
+<!--		&lt;!&ndash; Optional: Log4j2 SLF4J Binding (if you're using SLF4J) &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.apache.logging.log4j</groupId>-->
+<!--			<artifactId>log4j-slf4j-impl</artifactId>-->
+<!--		</dependency>-->
 
 		<!-- Springdoc OpenAPI for Swagger 3 -->
 		<dependency>

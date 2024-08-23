@@ -2,7 +2,9 @@ package com.jimmychiu.artion.service;
 
 import com.jimmychiu.artion.entity.Admin;
 import com.jimmychiu.artion.entity.Role;
+import com.jimmychiu.artion.enumType.Permission;
 import com.jimmychiu.artion.repository.AdminRepository;
+import com.jimmychiu.artion.util.PermissionsConverter;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +16,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class BackendUserService implements UserDetailsService {
@@ -36,16 +41,15 @@ public class BackendUserService implements UserDetailsService {
         String dbPassword = admin.getPassword();
 
         Role role = admin.getRole();
-        List<GrantedAuthority> authorities = convertToAuthorities(role);
-        return new User(dbUsername,dbPassword,authorities);
+        Collection<? extends GrantedAuthority> authorities = convertToAuthorities(role);
 
+        return new User(dbUsername,dbPassword,authorities);
     }
 
-    private List<GrantedAuthority> convertToAuthorities(Role role){
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        if (role != null) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-        return authorities;
+    private Collection<? extends GrantedAuthority> convertToAuthorities(Role role){
+        Set<Permission> permissionSet = PermissionsConverter.stringToPermissionSet(role.getPermissions());
+
+        return permissionSet.stream().map(permission -> new SimpleGrantedAuthority(permission.getCode()))
+                .collect(Collectors.toSet());
     }
 }

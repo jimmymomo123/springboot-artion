@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class RoleServiceImpl implements RoleService {
 
@@ -21,6 +23,8 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional
     public void createRole(Role role) {
+        role.setCreatedTime(LocalDateTime.now());
+        role.setUpdatedTime(LocalDateTime.now());
         roleRepo.save(role);
     }
 
@@ -29,6 +33,13 @@ public class RoleServiceImpl implements RoleService {
     public void updateRole(Integer roleId, Role roleDetails) {
         Role role = roleRepo.findById(roleId)
                 .orElseThrow(() -> new RuntimeException("Role not found with id: " + roleId));
+        role.setUpdatedTime(LocalDateTime.now());
+        if (roleDetails.getName() != null){
+            role.setName(roleDetails.getName());
+        }
+        if (roleDetails.getPermissions() != null){
+            role.setPermissions(roleDetails.getPermissions());
+        }
         roleRepo.save(role);
     }
 

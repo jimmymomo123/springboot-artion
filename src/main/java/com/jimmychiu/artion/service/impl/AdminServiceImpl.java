@@ -3,9 +3,10 @@ package com.jimmychiu.artion.service.impl;
 import com.jimmychiu.artion.entity.Admin;
 import com.jimmychiu.artion.repository.AdminRepository;
 import com.jimmychiu.artion.service.AdminService;
-import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 

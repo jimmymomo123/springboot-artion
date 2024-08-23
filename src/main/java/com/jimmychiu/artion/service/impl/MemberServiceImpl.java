@@ -8,12 +8,15 @@ import com.jimmychiu.artion.enumType.Permission;
 import com.jimmychiu.artion.repository.MemberRepository;
 import com.jimmychiu.artion.repository.RoleRepository;
 import com.jimmychiu.artion.service.MemberService;
+import com.jimmychiu.artion.util.PermissionsConverter;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.Set;
 
 
 @Service
@@ -37,7 +40,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 创建 Role 实体
         Role role = new Role();
-        role.setName(Permission.MEMBER_LOGIN.getCode());
+        role.setName("MEMBER_NORMAL");
         role.setPermissions(Permission.MEMBER_LOGIN.name());
         roleRepo.save(role);
 
@@ -102,6 +105,15 @@ public class MemberServiceImpl implements MemberService {
         member.setUpdatedTime(LocalDateTime.now());
         member.setMemberPic(avatarUrl);
         memberRepo.save(member);
+    }
+
+    @Override
+    public Set<Permission> getPermissionByMemberId(Long memberId) {
+        Member member = memberRepo.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + memberId));
+        Role role = member.getRole();
+        Set<Permission> permissionSet = PermissionsConverter.stringToPermissionSet(role.getPermissions());
+        return permissionSet;
     }
 
 }
