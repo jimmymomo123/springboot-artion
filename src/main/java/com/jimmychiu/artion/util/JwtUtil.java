@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Component
-public class JwtUitl {
+public class JwtUtil {
     private static final String secretKey = "Jimmy";
 
     public static String generateToken(Map<String, Object> claims){
@@ -19,10 +19,6 @@ public class JwtUitl {
     }
 
     public static Map<String, Object> parseToken(String token) {
-        // 去掉 "Bearer " 前缀
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
 
         return JWT.require(Algorithm.HMAC256(secretKey))
                 .build()

@@ -2,11 +2,12 @@ package com.jimmychiu.artion.component;
 
 import com.jimmychiu.artion.service.BackendUserService;
 import com.jimmychiu.artion.service.FrontendUserService;
-import com.jimmychiu.artion.util.JwtUitl;
+import com.jimmychiu.artion.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,31 +29,44 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 忽略 Swagger 相关的请求
-        String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/v3/api-docs") ||
-                requestURI.startsWith("/swagger-ui") ||
-                requestURI.startsWith("/swagger-resources") ||
-                requestURI.startsWith("/configuration")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+
+        final String requestTokenHeader = request.getHeader("Authorization");
+        String role = null;
+        String username = null;
 
         //token驗證
-        String token = request.getHeader("Authorization");
-        if (token == null || token.equals("null")){
-            //終止
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"token is not validate");
-            return;
+        String token = null;
+
+        if (!ObjectUtils.isEmpty(requestTokenHeader)){
+            // 去掉 "Bearer " 前缀
+            if (requestTokenHeader.startsWith("Bearer ")) {
+                token = requestTokenHeader.substring(7);
+            } else {
+                logger.warn("JWT Token does not begin with Bearer String");
+                token = requestTokenHeader;
+            }
+
+            if (token != null || !token.equals("null")){
+
+                Map<String, Object> claims = JwtUtil.parseToken(token);
+                role = (String) claims.get("role");
+                username = (String) claims.get("username");
+
+            }else {
+                //終止
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"token is not validate");
+                return;
+            }
         }
+        // else anonymousUser
 
-        Map<String, Object> claims = JwtUitl.parseToken(token);
-        String role = (String) claims.get("role");
-        String username = (String) claims.get("username");
+        UserDetails userDetails = null;
 
-        UserDetails userDetails = role.startsWith("ADMIN_")
-                ? backendUserService.loadUserByUsername(username)
-                : frontendUserService.loadUserByUsername(username);
+        if (username != null){
+            userDetails = role.startsWith("ADMIN_")
+                    ? backendUserService.loadUserByUsername(username)
+                    : frontendUserService.loadUserByUsername(username);
+        }
 
         // Once we get the token validate it.
         if (userDetails != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -65,6 +79,5 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request,response);
-
     }
 }

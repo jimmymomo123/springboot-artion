@@ -45,7 +45,7 @@ public class ArtionSecurityConfiguration {
                 // 放行 Swagger 和静态资源
                 .authorizeHttpRequests(authz ->
                                 authz
-                                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"," /configuration/**","/swagger-resources/**","/swagger-resources").permitAll() // 放行 Swagger 相关路径
+                                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll() // 放行 Swagger 相关路径
                                         .requestMatchers(HttpMethod.POST, "/members").permitAll()
                                         .requestMatchers("/members").hasAuthority(Permission.MEMBER_LOGIN.getCode())
                                         .requestMatchers("/admins").hasAuthority(Permission.ADMIN_LOGIN.getCode())

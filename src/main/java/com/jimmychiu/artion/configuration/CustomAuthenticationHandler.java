@@ -3,10 +3,9 @@ package com.jimmychiu.artion.configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jimmychiu.artion.entity.Admin;
 import com.jimmychiu.artion.entity.Member;
-import com.jimmychiu.artion.enumType.Permission;
 import com.jimmychiu.artion.repository.AdminRepository;
 import com.jimmychiu.artion.repository.MemberRepository;
-import com.jimmychiu.artion.util.JwtUitl;
+import com.jimmychiu.artion.util.JwtUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,7 +31,7 @@ public class CustomAuthenticationHandler implements AuthenticationSuccessHandler
     private AdminRepository adminRepo;
 
     @Autowired
-    private JwtUitl jwtUtil;
+    private JwtUtil jwtUtil;
 
     @Autowired
     private ObjectMapper objectMapper;
